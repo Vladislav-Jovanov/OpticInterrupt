@@ -1,9 +1,9 @@
 #include "TurnCounter.h"
-#include "Optic_Interrupt.h"
+#include "OpticInterrupt.h"
 #include "Arduino.h"
 #include "RPM.h"
 
-TurnCounter::TurnCounter(Optic_Interrupt * chopper, unsigned int openings, unsigned int turns)
+TurnCounter::TurnCounter(OpticInterrupt * chopper, unsigned int openings, unsigned int turns)
 {
     Chopper=chopper;
     totTurns=turns;

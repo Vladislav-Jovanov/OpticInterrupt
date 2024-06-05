@@ -1,13 +1,13 @@
 #ifndef TURNCOUNTER_H
 #define TURNCOUNTER_H
-#include "Optic_Interrupt.h"
+#include "OpticInterrupt.h"
 #include "HardwareSerial.h"
 #include "RPM.h"
 
 class TurnCounter
 {
     public:
-        TurnCounter(Optic_Interrupt * chopper, unsigned int openings=1, unsigned int turns=10);//if the first one is default asigned all following should be too
+        TurnCounter(OpticInterrupt * chopper, unsigned int openings=1, unsigned int turns=10);//if the first one is default asigned all following should be too
         virtual ~TurnCounter();
         
         
@@ -33,7 +33,7 @@ class TurnCounter
         bool display=false;
         void (*counter_end_func)();
         bool (RPM::*counter_stop_check)();
-        Optic_Interrupt * Chopper;
+        OpticInterrupt * Chopper;
         unsigned int totTurns;
         unsigned int currentTurn;
         unsigned int Counter;

@@ -1,12 +1,12 @@
-#ifndef OPTIC_INTERRUPT_H
-#define OPTIC_INTERRUPT_H
+#ifndef OPTICINTERRUPT_H
+#define OPTICINTERRUPT_H
 
 
-class Optic_Interrupt
+class OpticInterrupt
 {
     public:
-        Optic_Interrupt(int LED, int Ointp);
-        virtual ~Optic_Interrupt();
+        OpticInterrupt(int LED, int Ointp);
+        virtual ~OpticInterrupt();
         void setup_OI();
         void start_OI();
         void stop_OI();
@@ -23,4 +23,4 @@ class Optic_Interrupt
 
 };
 
-#endif // OPTIC_INTERRUPT_H
+#endif // OPTICINTERRUPT_H

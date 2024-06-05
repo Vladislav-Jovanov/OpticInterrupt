@@ -1,9 +1,9 @@
 #include "RPM.h"
 #include "HardwareSerial.h"
 #include "Arduino.h"
-#include "Optic_Interrupt.h"
+#include "OpticInterrupt.h"
 
-RPM::RPM(Optic_Interrupt * chopper, int openings, int average)
+RPM::RPM(OpticInterrupt * chopper, int openings, int average)
 {
     Chopper=chopper;
     Openings=openings;

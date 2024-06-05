@@ -2,13 +2,13 @@
 #define RPM_H
 
 #include "HardwareSerial.h"
-#include "Optic_Interrupt.h"
+#include "OpticInterrupt.h"
 
 //type of measurement is always continuous
 class RPM
 {
     public:
-        RPM(Optic_Interrupt * chopper, int openings=1, int average=0);
+        RPM(OpticInterrupt * chopper, int openings=1, int average=0);
         virtual ~RPM();
 
         bool get_status() { return measurement_status; }
@@ -26,7 +26,7 @@ class RPM
 
     private:
         void main_process(bool &edge, unsigned long &oldtime, unsigned long &newtime, double &sum, unsigned int &counter, String Direction, HardwareSerial * Serial);
-        Optic_Interrupt * Chopper;
+        OpticInterrupt * Chopper;
         int Openings;
         int Average;
         unsigned int frontCounter;
