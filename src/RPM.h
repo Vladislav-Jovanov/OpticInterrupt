@@ -8,7 +8,7 @@
 class RPM
 {
     public:
-        RPM(OpticInterrupt * chopper, int openings=1, int average=0);
+        RPM(Optic_Interrupt * chopper, int openings=1, int average=0);
         virtual ~RPM();
 
         bool get_status() { return measurement_status; }
@@ -26,7 +26,7 @@ class RPM
 
     private:
         void main_process(bool &edge, unsigned long &oldtime, unsigned long &newtime, double &sum, unsigned int &counter, String Direction, HardwareSerial * Serial);
-        OpticInterrupt * Chopper;
+        Optic_Interrupt * Chopper;
         int Openings;
         int Average;
         unsigned int frontCounter;

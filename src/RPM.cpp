@@ -3,7 +3,7 @@
 #include "Arduino.h"
 #include "OpticInterrupt.h"
 
-RPM::RPM(OpticInterrupt * chopper, int openings, int average)
+RPM::RPM(Optic_Interrupt * chopper, int openings, int average)
 {
     Chopper=chopper;
     Openings=openings;
@@ -17,7 +17,7 @@ RPM::~RPM()
 
 
 void RPM::start_measurement(){
-  if (!Chopper->get_state()){
+  if (!Chopper->status()){
     Chopper->start_OI();
   }
   init=true;

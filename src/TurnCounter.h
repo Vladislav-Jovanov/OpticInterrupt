@@ -7,7 +7,7 @@
 class TurnCounter
 {
     public:
-        TurnCounter(OpticInterrupt * chopper, unsigned int openings=1, unsigned int turns=10);//if the first one is default asigned all following should be too
+        TurnCounter(Optic_Interrupt * chopper, unsigned int openings=1, unsigned int turns=10);//if the first one is default asigned all following should be too
         virtual ~TurnCounter();
         
         
@@ -33,7 +33,7 @@ class TurnCounter
         bool display=false;
         void (*counter_end_func)();
         bool (RPM::*counter_stop_check)();
-        OpticInterrupt * Chopper;
+        Optic_Interrupt * Chopper;
         unsigned int totTurns;
         unsigned int currentTurn;
         unsigned int Counter;

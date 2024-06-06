@@ -1,20 +1,20 @@
+#include <OpticInterrupt.h>
+
 #define PIN_OIntp 2
 #define PIN_LED 4
 
+Optic_Interrupt my_interrupt(PIN_LED, PIN_OIntp);
+
 void Interrupt_Action(){
-  int state= digitalRead(PIN_OIntp);
-  Serial.println(state);
+  Serial.println(my_interrupt.get_change());
  }
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
-  pinMode(PIN_OIntp, INPUT);
-  Interrupt_Action();
-  pinMode(PIN_LED,OUTPUT);
-  digitalWrite(PIN_LED,HIGH);
-  Interrupt_Action();
+  my_interrupt.setup_OI();
   attachInterrupt(digitalPinToInterrupt(PIN_OIntp), Interrupt_Action, CHANGE);
+  my_interrupt.start_OI();
 }
 
 

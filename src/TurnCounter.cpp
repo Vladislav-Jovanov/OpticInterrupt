@@ -3,7 +3,7 @@
 #include "Arduino.h"
 #include "RPM.h"
 
-TurnCounter::TurnCounter(OpticInterrupt * chopper, unsigned int openings, unsigned int turns)
+TurnCounter::TurnCounter(Optic_Interrupt * chopper, unsigned int openings, unsigned int turns)
 {
     Chopper=chopper;
     totTurns=turns;
@@ -17,7 +17,7 @@ TurnCounter::~TurnCounter()
 
 
 void TurnCounter::start_counter(){
-  if (!Chopper->get_state()){
+  if (!Chopper->status()){
     Chopper->start_OI();
   }
   init=true;
