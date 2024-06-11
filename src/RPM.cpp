@@ -88,7 +88,7 @@ void RPM::main(HardwareSerial * Serial){
 void RPM::IRS_CHANGE(){
     if (measurement_status){
         if (init){
-         State=Chopper->get_change();
+         State=!Chopper->get_change(); //to react to the first next edge so in our setup that will always be from HIGH to LOW
          init=false;
         }else{
           if (Chopper->get_change()==State){

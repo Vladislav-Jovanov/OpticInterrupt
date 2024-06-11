@@ -21,8 +21,12 @@ void Optic_Interrupt::stop_OI(){
 }
 
 void Optic_Interrupt::setup_OI(){
-    pinMode(PIN_LED, OUTPUT);//setup OI
-    pinMode(PIN_OIntp, INPUT);//setup OI
+    pinMode(PIN_LED, OUTPUT);//to turn on the led
+    pinMode(PIN_OIntp, INPUT);
+//we have external pullup resistor connected to PIN_LED. PIN_LED-> HIGH  PIN_OIntp LOW->LOW when sensor illuminated 
+//                                                                       PIN_OIntp LOW->High when sensor covered
+//we will have fake trigger in second case so we wont react to it but we will react to first next change from HIGH to LOW
+//only if you measure time can you distinguish when sensor was illuminated and then got covered                                 
 }
 
 int Optic_Interrupt::get_change(){

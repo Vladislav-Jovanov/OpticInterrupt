@@ -66,7 +66,7 @@ void TurnCounter::main_counter(HardwareSerial * Serial){
 void TurnCounter::IRS_CHANGE(){
     if (counter_running){
       if (init){
-        State=Chopper->get_change();
+        State=!Chopper->get_change();//turn will always start when the blade passes and sensor gets illuminated
         init=false; 
       }else if (Chopper->get_change()==State){
         Edge=true;
