@@ -42,7 +42,7 @@ void TurnCounter::setup(void (*end_func)()){
   }
 }
 
-void TurnCounter::main_counter(HardwareSerial * Serial){
+void TurnCounter::main(HardwareSerial * Serial){
     if (Edge){
         Counter++;
         if (!(Counter % Openings)& Counter!=0){

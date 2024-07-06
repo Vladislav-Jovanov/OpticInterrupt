@@ -20,7 +20,7 @@ class TurnCounter
         //void SetCurrentCounter(unsigned int val) {currentCount=val;};
         void start_counter();
         void stop_counter(bool multi_use_check=false);
-        void main_counter(HardwareSerial * Serial);
+        void main(HardwareSerial * Serial);
         int process_command(String * input_command, bool mutli_use_check=false);
         void IRS_CHANGE();
         void setup(void (*end_func)()=NULL);
