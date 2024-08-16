@@ -7,9 +7,9 @@ class Optic_Interrupt
     public:
         Optic_Interrupt(int LED, int Ointp);
         virtual ~Optic_Interrupt();
-        void setup_OI();
-        void start_OI();
-        void stop_OI();
+        void setup();
+        void start();
+        void stop();
         bool status(){return LED_state;};
         int get_change();
 

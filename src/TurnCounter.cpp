@@ -18,7 +18,7 @@ TurnCounter::~TurnCounter()
 
 void TurnCounter::start_counter(){
   if (!Chopper->status()){
-    Chopper->start_OI();
+    Chopper->start();
   }
   init=true;
   counter_running=true;
@@ -28,7 +28,7 @@ void TurnCounter::start_counter(){
 
 void TurnCounter::stop_counter(bool multi_use_check){
   if (!multi_use_check){ 
-    Chopper->stop_OI();
+    Chopper->stop();
   }
   counter_running=false;
 }

@@ -11,16 +11,16 @@ Optic_Interrupt::~Optic_Interrupt(){
     //dtor
 }
 
-void Optic_Interrupt::start_OI(){
+void Optic_Interrupt::start(){
   digitalWrite(PIN_LED, HIGH);
   LED_state=true;
 }
-void Optic_Interrupt::stop_OI(){
+void Optic_Interrupt::stop(){
   digitalWrite(PIN_LED, LOW);
   LED_state=false;
 }
 
-void Optic_Interrupt::setup_OI(){
+void Optic_Interrupt::setup(){
     pinMode(PIN_LED, OUTPUT);//to turn on the led
     pinMode(PIN_OIntp, INPUT);
 //we have external pullup resistor connected to PIN_LED. PIN_LED-> HIGH  PIN_OIntp LOW->LOW when sensor illuminated 

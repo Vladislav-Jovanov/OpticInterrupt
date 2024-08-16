@@ -18,7 +18,7 @@ RPM::~RPM()
 
 void RPM::start_measurement(){
   if (!Chopper->status()){
-    Chopper->start_OI();
+    Chopper->start();
   }
   init=true;
   frontSum=0;
@@ -33,7 +33,7 @@ void RPM::start_measurement(){
 }
 void RPM::stop_measurement(bool multi_use_check){
   if (!multi_use_check){ 
-    Chopper->stop_OI();
+    Chopper->stop();
   }
   measurement_status=false;
 }
