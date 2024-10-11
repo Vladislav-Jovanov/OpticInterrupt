@@ -1,0 +1,5 @@
+OI class will be attaching interrupts and will contain software interrupts inside
+RPM will have its own interrupt functions
+TrunCounter its own
+in main you fill define static interrupt function that you will be sending to OI class
+

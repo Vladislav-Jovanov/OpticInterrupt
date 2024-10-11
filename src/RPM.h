@@ -3,47 +3,60 @@
 
 #include "HardwareSerial.h"
 #include "OpticInterrupt.h"
+#include "SoftwareInterrupt.h"
 
-//type of measurement is always continuous
+//rising from low to high when
+struct RPMdataout{
+    unsigned long FallingTime;
+    float FallingFreq;
+    unsigned long RisingTime;
+    float RisingFreq;
+};
+
+//in this setup we can't know  if first RISING edge is due to the blocked start or if the chopper moved and blocked the light 
 class RPM
 {
     public:
         RPM(Optic_Interrupt * chopper, int openings=1, int average=0);
         virtual ~RPM();
 
-        bool get_status() { return measurement_status; }
-        void main(HardwareSerial * Serial);
-        void start_measurement();
-        void stop_measurement(bool multi_use_check=false);
+        bool get_status() {return measurement_status;};
+        bool is_data_read(){return data_read;};
+        RPMdataout get_data();
+        void enable_serial(HardwareSerial * Serial_in);
+        void main();
+        void start();
+        void stop();
         void set_average(int val){Average=val;};
         int get_average(){return Average;};
-        int process_command(String * input_command, bool multi_use_check=false);
-        void IRS_CHANGE();
-        static bool pass(){};
-        //struct out_data{unsigned long time; unsigned long freq;};
+        int process_command(String * input_command);
+        void IRS_falling();
+        void IRS_rising();
 
     protected:
 
     private:
-        void main_process(bool &edge, unsigned long &oldtime, unsigned long &newtime, double &sum, unsigned int &counter, String Direction, HardwareSerial * Serial);
-        Optic_Interrupt * Chopper;
+        bool data_measured_rising;
+        bool data_measured_falling;
+        bool data_read=true;
+        void process_time(unsigned long &current_time, double &sum);
+        void display_data(unsigned long &current_time, float &freq, String Direction);
+        bool connected=false;
+        bool serial_enabled=false;
+        void main_process(bool &edge, bool &data_measured, unsigned long &current_time, double &sum, float &freq, unsigned int &counter, String Direction);  
+        Optic_Interrupt * Chopper=NULL;
+        HardwareSerial * Serial=NULL;
         int Openings;
         int Average;
-        unsigned int frontCounter;
-        unsigned int backCounter;
-        bool front_edge=false;//freq and counter class
-        bool back_edge=false;//freq and counter class
-        bool measurement_status=false;//freq and counter class
-        unsigned long frontTimenew;//freq and counter class
-        unsigned long frontTimeold;//freq and counter class
-        unsigned long backTimenew;//freq and counter class
-        unsigned long backTimeold;//freq and counter class
-        double frontSum;
-        double backSum;
-        bool State;
+        RPMdataout DataOut;
+        unsigned int RisingCounter;
+        unsigned int FallingCounter;
+        bool RisingEdge=false;
+        bool FallingEdge=false;
+        bool measurement_status=false;
+        double RisingSum;
+        double FallingSum;
         bool init=true;
-        //unsigned long frontFreq;
-        //unsigned long backFreq;
 };
 
 #endif // RPM_H
