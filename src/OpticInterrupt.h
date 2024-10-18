@@ -3,6 +3,18 @@
 
 #include <SoftwareInterrupt.h>
 
+struct LED_state{
+    bool ledrpm;
+    bool ledtc;
+    bool ledcustom;
+};
+
+enum oitype{
+    oicustom=0,
+    oirpm=1,
+    oitc=2,
+};
+
 //what if this one would be tracking position?
 //why not tracking position should be done when LED is on
 class Optic_Interrupt
@@ -12,13 +24,13 @@ class Optic_Interrupt
         virtual ~Optic_Interrupt();
         void setup(int mode);
         void setup_interrupt(void (*irs)(),int State, int delay=NULL);
-        void start();
-        void stop();
-        void led_start();
-        void led_stop();
-        int connect_TC();
-        int connect_RPM();
-        bool is_led_on(){return LED_state;};
+        void start(oitype val);
+        void stop(oitype val);
+        void led_start(oitype val=oicustom);
+        void led_stop(oitype val=oicustom);
+        int connect(oitype val);
+        int disconnect(oitype val);
+        bool is_led_on(){return (LED_on.ledrpm || LED_on.ledtc || LED_on.ledcustom);};
         int get_state(){return digitalRead(PIN_Ointp);};
         void main();
         void IRS_rising();
@@ -29,18 +41,17 @@ class Optic_Interrupt
         
         
     private:
+        void update_state(oitype val, bool state);
         bool rising_finished=false;
         bool falling_finished=false;
         bool change_finished=false;
         bool setup_finished;
-        int disconnect_RPM();//do I need this?
-        int disconnect_TC();//do I need this?
         bool RPM_measurement=false;
         bool Turn_counting=false;
         Software_Interrupt INTER_falling=NULL;
         Software_Interrupt INTER_rising=NULL;
-        Software_Interrupt INTER_change=NULL;        
-        bool LED_state;//on off
+        Software_Interrupt INTER_change=NULL;
+        LED_state LED_on;//on off
         unsigned long start_time;
         int PIN_LED;
         int PIN_Ointp;

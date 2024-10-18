@@ -4,44 +4,43 @@
 #include "HardwareSerial.h"
 #include "RPM.h"
 
+#define TCCOMMANDS "on - start turn counter\noff - stop turn counter\ndon - display results\ndoff - stop displaying results\nt<num> - set number of turns\n"
+
 class TurnCounter
 {
     public:
-        TurnCounter(Optic_Interrupt * chopper, unsigned int openings=1, unsigned int turns=10);//if the first one is default asigned all following should be too
+        TurnCounter(Optic_Interrupt * chopper, unsigned int openings=1);//if the first one is default asigned all following should be too
         virtual ~TurnCounter();
         
-        
         bool get_status() { return counter_running; };
-        void display_on(){display=true;};
-        void display_off(){display=false;};
-        //unsigned int GetTotCounter() { return totCount; };
-        //unsigned int GetCurentCounter() { return currentCount; };
-        void SetCounter(unsigned int val);
-        //void SetCurrentCounter(unsigned int val) {currentCount=val;};
-        void start_counter();
-        void stop_counter(bool multi_use_check=false);
-        void main(HardwareSerial * Serial);
-        int process_command(String * input_command, bool mutli_use_check=false);
-        void IRS_CHANGE();
-        void setup(void (*end_func)()=NULL);
+        void enable_serial(HardwareSerial * Serial_in);
+        void display_on();
+        void display_off();
+        void start();
+        void stop();//this also stops absolute positioning
+        void main();
+        int process_command(String * input_command);
+        void IRS_change();
+        void setup_finish(void (*end_func)()=NULL);
+        void set_turns(unsigned int turns);
+
 
     protected:
 
     private:
-        bool State;
-        unsigned int Openings;
+        bool connected;
         bool display=false;
-        void (*counter_end_func)();
-        bool (RPM::*counter_stop_check)();
+        void display_serial();
+        unsigned int Openings;
+        bool serial_enabled=false;
+        void (*counter_end_func)()=NULL;
         Optic_Interrupt * Chopper;
-        unsigned int totTurns;
-        unsigned int currentTurn;
-        unsigned int Counter;
+        HardwareSerial * Serial=NULL;
+        int totTurns=0;
+        int counter;
+        int currentTurn;
         bool Edge=false;
-        bool counter_running=false;//freq and counter class
-        bool init=true;
-        static void pass(){};
-        
+        bool counter_running=false;
 };
 
 #endif // TURNCOUNTER_H

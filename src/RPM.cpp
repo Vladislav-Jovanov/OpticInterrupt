@@ -5,7 +5,7 @@
 
 RPM::RPM(Optic_Interrupt * chopper, int openings, int average)
 {
-    int answer=chopper->connect_RPM();
+    int answer=chopper->connect(oirpm);
     if (!answer){
         Chopper=chopper;
         Openings=openings;
@@ -33,11 +33,7 @@ void RPM::IRS_falling(){
 
 void RPM::IRS_rising(){
     if (measurement_status){
-        if (init){
-            init=false;//skips the first change from low to high
-        }else{        
-            RisingEdge=true;
-        }
+        RisingEdge=true;
     }
 }
 
@@ -62,8 +58,7 @@ void RPM::IRS_CHANGE(){
 
 void RPM::start(){
     if (connected){
-        Chopper->start();
-        init=true;
+        Chopper->start(oirpm);
         RisingSum=0;
         FallingSum=0;
         RisingCounter=0;
@@ -75,7 +70,7 @@ void RPM::start(){
 }
 void RPM::stop(){
     if (connected){
-        Chopper->stop();
+        Chopper->stop(oirpm);
     }
     measurement_status=false;
 }
@@ -87,8 +82,18 @@ void RPM::process_time(unsigned long &current_time, double &sum){
     current_time=newtime;
 }
 
-void RPM::display_data(unsigned long &current_time, float &freq, String Direction){
+void RPM::display_on(){
     if (serial_enabled){
+        display=true;
+    }
+}
+
+void RPM::display_off(){
+    display=false;
+}
+
+void RPM::display_serial(unsigned long &current_time, float &freq, String Direction){
+    if (serial_enabled && display){
         Serial->print("Time (us):");
         Serial->print(current_time);
         Serial->print(Direction);
@@ -97,12 +102,13 @@ void RPM::display_data(unsigned long &current_time, float &freq, String Directio
     }
 }
 
+
+
 void RPM::main_process(bool &edge, bool &data_measured, unsigned long &current_time, double &sum, float &freq, unsigned int &counter, String Direction){
     if (edge){
         if (current_time==0){
             //record the first time upon measurement start
             current_time=micros();
-            return;//skips the rest
         }else{
             counter++;
         }
@@ -110,7 +116,7 @@ void RPM::main_process(bool &edge, bool &data_measured, unsigned long &current_t
         if ((Average==0 && counter==1)||(Average!=0 && !(counter % (Average*Openings)) && counter>=1)){
             process_time(current_time, sum);
             freq=1/((double)Openings*sum);
-            display_data(current_time, freq, Direction);
+            display_serial(current_time, freq, Direction);
             data_measured=true;
             counter=0;
             sum=0;
@@ -132,7 +138,7 @@ void RPM::main(){
 RPMdataout RPM::get_data(){
     if (!data_read){
         data_read=true;
-        return DataOut;   
+        return DataOut;
     }
 }
 
@@ -144,13 +150,19 @@ int RPM::process_command(String *input_command){
         }else if (input_command->substring(input_command->indexOf("_")+1,input_command->indexOf("_")+4)=="off"){
             stop();
             return 0;
+        }else if (input_command->substring(input_command->indexOf("_")+1,input_command->indexOf("_")+4)=="don"){
+            display_on();
+            return 0;
+        }else if (input_command->substring(input_command->indexOf("_")+1,input_command->indexOf("_")+5)=="doff"){
+            display_off();
+            return 0;
         }else if (input_command->substring(input_command->indexOf("_")+1,input_command->indexOf("_")+5)=="avg?"){
             Serial->println(get_average());
             return 0;
         }else if (input_command->substring(input_command->indexOf("_")+1,input_command->indexOf("_")+4)=="avg"){
-            if (input_command->substring(input_command->indexOf("g")+1).toInt()<=0){         
+            if (input_command->substring(input_command->indexOf("g")+1).toInt()<=0){
                 return 1;
-            }else{           
+            }else{
                 set_average(input_command->substring(input_command->indexOf("g")+1).toInt());
                 return 0;
             }
