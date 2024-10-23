@@ -169,7 +169,7 @@ void Optic_Interrupt::main(){
                 INTER_rising.main();
             }
             if (change_finished){
-                INTER_change.main();        
+                INTER_change.main();
             }
         }
     }

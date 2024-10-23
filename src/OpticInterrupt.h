@@ -38,8 +38,8 @@ class Optic_Interrupt
         void IRS_change();
 
     protected:
-        
-        
+
+
     private:
         void update_state(oitype val, bool state);
         bool rising_finished=false;

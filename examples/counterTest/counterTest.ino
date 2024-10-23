@@ -42,6 +42,6 @@ void loop() {
     my_interrupt.main();
     my_counter.main();
     if (!my_counter.get_status()){
-        my_counter.start();    
+        my_counter.start();
     }
 }
