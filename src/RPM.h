@@ -5,7 +5,7 @@
 #include "OpticInterrupt.h"
 #include "SoftwareInterrupt.h"
 
-#define RPMCOMMANDS "on - start rpm measurement\noff - stop rpm measurement\ndon - display results\ndoff - stop displaying results\navg<num> - set avergaging\navg? - display avergage value\n"
+#define RPMCOMMANDS "on - start rpm measurement\noff - stop rpm measurement\ndon - display results\ndoff - stop displaying results\navg<num> - set avergaging\navg? - display avergage value"
 
 //rising from low to high when
 struct RPMdataout{

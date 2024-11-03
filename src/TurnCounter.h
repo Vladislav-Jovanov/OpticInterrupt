@@ -4,7 +4,7 @@
 #include "HardwareSerial.h"
 #include "RPM.h"
 
-#define TCCOMMANDS "on - start turn counter\noff - stop turn counter\ndon - display results\ndoff - stop displaying results\nt<num> - set number of turns\n"
+#define TCCOMMANDS "on - start turn counter\noff - stop turn counter\ndon - display results\ndoff - stop displaying results\nt<num> - set number of turns"
 
 class TurnCounter
 {

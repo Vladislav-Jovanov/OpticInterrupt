@@ -34,6 +34,7 @@ void TurnCounter::start(){
 
 void TurnCounter::stop(){
     if (connected){
+        Edge=false;
         Chopper->stop(oitc);
         counter_running=false;
     }
@@ -79,7 +80,7 @@ void TurnCounter::display_serial(){
 
 void TurnCounter::main(){
     if (Edge){
-        if (!(counter % 2*Openings)& counter>=1){
+        if (!(counter % (2*Openings)) & counter>=1){
             currentTurn++;
             counter=0;
             display_serial();
@@ -90,6 +91,7 @@ void TurnCounter::main(){
                 counter_end_func();
             }
             stop();
+            return;
         }
         counter++;
         Edge=false;
